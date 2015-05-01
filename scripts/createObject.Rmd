@@ -1,6 +1,6 @@
 # Create colonCancerWGBS
 
-```{r global_options, include=FALSE}
+```{r global_options, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(eval=FALSE)
 ```
 
@@ -130,7 +130,7 @@ Next, we build the bisulfite genome indexes using Bowtie 2 for the human genome 
 
 The `bismark_genome_preparation` command needs to only be once for the genome of interest for bisulfite alignments. This will create two folders within the `/reference/genomes/hsapiens/ENSEMBL/GRCh38/`. Within this folder needs to be a `.fa` or `.fasta` extension (single or multiple entries per file). The two individual folders within this directory are one for a `C->T` converted genome and the other one for the `G->A` converted genome. After creating `C->T` and `G->A` versions of the genome they will be indexed in parallel using the indexer bowtie-build (or bowtie2-build).  The `--bowtie2` parameter will create bisulfite indexes for Bowtie 2 (default is Bowtie 1). 
 
-```{r,eval=FALSE}
+```{r}
 bismark_genome_preparation --bowtie2 <path_to>/reference/genomes/hsapiens/ENSEMBL/GRCh38/
 ```
 
@@ -139,7 +139,7 @@ bismark_genome_preparation --bowtie2 <path_to>/reference/genomes/hsapiens/ENSEMB
 
 The paired-end reads for each sample are aligned with Bowtie 2 because it scaled better for longer reads. The parameter `--multicore` is used to speed up the mapping. Here we use 8 cores. The parameter `--bam` writes the output file to a BAM format instead of an uncompressed SAM file. The folder `/reference/genomes/hsapiens/ENSEMBL/GRCh38` contains the bisulfite genome indexes for Bowtie 2 (`--bowtie2`). The `-1` and `-2` parameters correspond to the paired-end `.fastq` files that have been trimmed. 
 
-```{r}
+```{r, engine='bash'}
 cd <path_to>/fastq
 for f in `cat ../extdata/sraFiles.txt`; do bismark --multicore 8 \ 
  --bowtie2 --bam <path_to>/reference/genomes/hsapiens/ENSEMBL/GRCh38/ \ 
