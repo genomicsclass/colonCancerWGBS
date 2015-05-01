@@ -103,7 +103,7 @@ firefox SRR949215_1_val_1_fastqc/fastqc_report.html &
 
 We use [`trim_galore`](http://www.bioinformatics.babraham.ac.uk/projects/trim_galore/) to trim the reads to improve mapping efficiency and reduce the chance of misalignments. Use the `--paired` parameter to specify that this was a paired-end experiment. This will remove base calls with a Phred score of 20 or lower, removes adapter sequences, removes sequence pairs where either read became too short as a result of trimming (less than 20 bp) and keeps paired-end sequence pairs in sync. 
 
-```{r}
+```{r, engine='bash'}
 cd <path_to>/fastq
 cat ../extdata/sraFiles.txt | parallel -j 6 trim_galore --paired \ 
  --fastqc {}\_1.fastq {}\_2.fastq
@@ -159,7 +159,7 @@ cat SRR949215_1_val_1.fq_bismark_bt2_PE_report.txt
 
 The cytosine methylation calls are extracted using the `bismark_methylation_extractor` command for every single C analysed. Several output files will be produced including strand and context specific cytosine output files (CpG, CHG or CHH).  The `--bedGraph` parameter generates coverage files which are useful as input for the R/Bioconductor packge `bsseq` later on. In addition, an M-bias report will be generated and an overall count report. The command `bismark_methylation_extractor` will detect if the input BAM file is for single-end or paired-end (and will set the `-p --no_overlap` parameter for paired-end in our case).  The parameter `--gzip` returns gzipped context specific cytosine output files. 
 
-```{r}
+```{r, engine='bash'}
 cd <path_to>/fastq/afterTrim
 bismark_methylation_extractor -p --no_overlap --comprehensive \ 
  --multicore 4 --buffer_size 5G --bedGraph --counts --gzip \
@@ -177,7 +177,7 @@ bismark2report
 
 For illustrative purposes, we extract only the methylation loci in chromosome 22 from the `.cov` file. 
 
-```{r}
+```{r, engine='bash'}
 for f in `cat ../extdata/sraFiles.txt`; do awk -F"\t" '$1 == "22" { print $0 }' \ 
  $f\_1_val_1.fq_bismark_bt2_pe.bismark.cov > $f.chr22.cov; done
 ```
