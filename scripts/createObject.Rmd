@@ -1,4 +1,5 @@
 # Create colonCancerWGBS
+## Author: Stephanie Hicks
 
 ```{r global_options, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(eval=FALSE)
@@ -110,6 +111,32 @@ cat ../extdata/sraFiles.txt | parallel -j 6 trim_galore --paired \
 ```
 
 The `--fastqc` parameter re-runs `fastqc` on the trimmed files to compare the quality of the reads before and after trimming.  
+
+Here is an example of the basic summary statistics before and after trimming for sample `SRR949210`: 
+
+Before: 
+
+```{r, engine='bash', eval=TRUE}
+cat ../extdata/beforeTrim/fastqc_data.txt | head -10
+```
+
+After: 
+
+```{r, engine='bash', eval=TRUE}
+cat ../extdata/afterTrim/fastqc_data.txt | head -10
+```
+
+and the base quality scores from the first paired-end set of fastq files before and after trimming: 
+
+Before: 
+
+![Before-trimming](../extdata/beforeTrim/per_base_quality.png)
+
+After:
+
+![After-trimming](../extdata/afterTrim/per_base_quality.png)
+
+
 
 # Alignment and Mapping paired-end reads
 
